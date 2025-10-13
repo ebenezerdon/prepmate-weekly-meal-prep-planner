@@ -34,13 +34,13 @@
     }
     State.dishes.forEach(d => {
       const $row = $(`<div class="flex items-center justify-between"></div>`);
-      const $left = $(`<div class=\"flex items-center gap-3\"></div>`);
+      const $left = $(`<div class="flex items-center gap-3 flex-1 min-w-0"></div>`);
       $left.append($(`<div style=\"width:36px;height:36px;border-radius:8px;background:${d.color};color:white;display:flex;align-items:center;justify-content:center;font-weight:700;\">${d.name.charAt(0)}</div>`));
       $left.append($(`<div><div class=\"font-medium\">${d.name}</div><div class=\"text-xs text-gray-500\">Makes ${d.servings} servings</div></div>`));
-      const $right = $(`<div class=\"flex items-center gap-2\"></div>`);
+      const $right = $(`<div class="flex items-center gap-2 flex-shrink-0 whitespace-nowrap"></div>`);
       const $use = $(`<button class=\"btn-muted\" data-id=\"${d.id}\">Use</button>`);
       $use.on('click', () => openAssignForDish(d.id));
-      const $del = $(`<button class=\"text-sm text-rose-600\">Delete</button>`);
+      const $del = $(`<button class="btn-muted text-rose-600" type="button">Delete</button>`);
       $del.on('click', () => { if (confirm('Delete dish? This will remove it from the library.')){ removeDish(d.id); } });
       $right.append($use).append($del);
       $row.append($left).append($right);
