@@ -1,0 +1,131 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>PrepMate Planner — Weekly Meal Prep</title>
+  <meta name="description" content="Weekly meal prep planner: assign dishes to days, manage servings and leftovers, auto-balance plans.">
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+  <link rel="stylesheet" href="styles/main.css">
+  <style type="text/tailwindcss" data-teda="tailwind-apply">
+    @layer components {
+      .btn-primary { @apply bg-emerald-600 text-white px-3 py-2 rounded-md shadow hover:bg-emerald-700 focus:outline-none focus:ring-2 focus:ring-emerald-300; }
+      .btn-muted { @apply bg-white border border-gray-200 px-2 py-1 rounded-md text-sm text-gray-700 hover:bg-gray-50; }
+      .slot { @apply rounded-lg border border-dashed border-gray-200 bg-white p-2 min-h-[74px]; }
+      .dish-pill { @apply inline-flex items-center gap-2 px-2 py-1 rounded-md text-sm font-medium; }
+    }
+  </style>
+</head>
+<body class="bg-gray-50 min-h-screen text-gray-800">
+  <header class="bg-white shadow-sm">
+    <div class="max-w-7xl mx-auto px-4 py-4 flex items-center justify-between">
+      <div class="flex items-center gap-3">
+        <a href="index.html" class="text-emerald-600 font-semibold">← Back</a>
+        <h1 class="text-xl font-semibold">PrepMate Planner</h1>
+        <span class="ml-3 text-sm text-gray-500">Weekly view</span>
+      </div>
+      <div class="flex items-center gap-3">
+        <button id="clearWeek" class="btn-muted">Clear week</button>
+        <button id="exportPlan" class="btn-muted">Export</button>
+        <label title="Auto-balance leftovers" class="flex items-center gap-2 text-sm">
+          <input id="toggleAutoBalance" type="checkbox" class="h-4 w-4" /> <span>Auto-balance</span>
+        </label>
+      </div>
+    </div>
+  </header>
+
+  <main class="max-w-7xl mx-auto px-4 py-8 grid grid-cols-1 lg:grid-cols-4 gap-6">
+    <!-- Week grid -->
+    <section class="lg:col-span-3 card">
+      <div class="flex items-center justify-between">
+        <h2 class="text-lg font-semibold">Week Planner</h2>
+        <div class="text-sm text-gray-500">Click a slot to assign a dish. Leftover indicators appear when servings remain.</div>
+      </div>
+
+      <div id="weekGrid" class="mt-4 overflow-x-auto">
+        <!-- js builds a responsive table-like week grid -->
+      </div>
+
+      <div id="summary" class="mt-6 grid grid-cols-1 md:grid-cols-3 gap-4">
+        <div class="p-4 rounded-lg bg-emerald-50">
+          <div class="text-xs uppercase text-emerald-700 font-semibold">Leftovers</div>
+          <div id="leftoversList" class="mt-2 text-sm text-gray-700">—</div>
+        </div>
+        <div class="p-4 rounded-lg bg-amber-50">
+          <div class="text-xs uppercase text-amber-700 font-semibold">Planned servings</div>
+          <div id="servingsSummary" class="mt-2 text-sm text-gray-700">—</div>
+        </div>
+        <div class="p-4 rounded-lg bg-rose-50">
+          <div class="text-xs uppercase text-rose-700 font-semibold">Notes</div>
+          <div id="planNotes" class="mt-2 text-sm text-gray-700">Plan saved locally</div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Side panel: Dish manager -->
+    <aside class="card">
+      <div class="flex items-center justify-between">
+        <h3 class="font-semibold">Dish library</h3>
+        <button id="addDishBtn" class="btn-primary text-sm">+ Add</button>
+      </div>
+
+      <form id="dishForm" class="mt-4 hidden" aria-hidden="true">
+        <label class="block text-sm text-gray-700">Name</label>
+        <input id="dishName" class="mt-1 block w-full rounded-md border-gray-200 focus:ring-emerald-300" />
+
+        <label class="block text-sm text-gray-700 mt-3">Servings produced</label>
+        <input id="dishServings" type="number" min="1" value="4" class="mt-1 block w-32 rounded-md border-gray-200" />
+
+        <label class="block text-sm text-gray-700 mt-3">Color tag</label>
+        <input id="dishColor" type="color" value="#34D399" class="mt-1" />
+
+        <div class="mt-4 flex items-center gap-2">
+          <button id="saveDish" type="button" class="btn-primary">Save</button>
+          <button id="cancelDish" type="button" class="btn-muted">Cancel</button>
+        </div>
+      </form>
+
+      <div id="dishList" class="mt-4 space-y-3 text-sm text-gray-700">
+        <!-- dish rows render here -->
+      </div>
+
+      <div class="mt-6 text-xs text-gray-500">Your dishes and the servings they make are saved locally in your browser.</div>
+    </aside>
+
+    <!-- Assignment modal (hidden) -->
+    <div id="assignModal" class="fixed inset-0 z-40 hidden items-center justify-center bg-black bg-opacity-30">
+      <div class="w-full max-w-md bg-white rounded-xl p-6 shadow-lg">
+        <h4 class="font-semibold">Assign dish to slot</h4>
+        <div class="mt-3">
+          <label class="text-sm text-gray-700">Select dish</label>
+          <select id="assignDish" class="mt-1 w-full rounded-md border-gray-200"></select>
+        </div>
+        <div class="mt-3 grid grid-cols-2 gap-3">
+          <div>
+            <label class="text-sm text-gray-700">Servings to use</label>
+            <input id="assignServings" type="number" min="1" value="1" class="mt-1 w-full rounded-md border-gray-200" />
+          </div>
+          <div>
+            <label class="text-sm text-gray-700">Meal</label>
+            <select id="assignMeal" class="mt-1 w-full rounded-md border-gray-200">
+              <option>Breakfast</option>
+              <option>Lunch</option>
+              <option>Dinner</option>
+            </select>
+          </div>
+        </div>
+        <div class="mt-4 flex items-center justify-end gap-2">
+          <button id="assignCancel" class="btn-muted">Cancel</button>
+          <button id="assignSave" class="btn-primary">Assign</button>
+        </div>
+      </div>
+    </div>
+
+  </main>
+
+  <script src="scripts/helpers.js"></script>
+  <script src="scripts/ui.js"></script>
+  <script src="scripts/main.js"></script>
+</body>
+</html>

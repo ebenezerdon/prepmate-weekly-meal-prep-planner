@@ -1,0 +1,28 @@
+/* styles/main.css - custom CSS for PrepMate planner */
+
+:root{
+  --muted:#6b7280;
+}
+
+html,body{
+  height:100%;
+}
+
+.card{ /* small fallback styling in case Tailwind classes are modified */
+  background:#fff;
+}
+
+/* Week grid responsive behavior */
+#weekGrid table{ width:100%; border-collapse:collapse; }
+#weekGrid th{ position:sticky; top:0; background:linear-gradient(180deg, rgba(255,255,255,0.9), rgba(255,255,255,0.8)); }
+#weekGrid td{ vertical-align:top; }
+
+/* Visual for dish pills inside slots */
+.dish-pill{ border-radius:8px; padding:6px 8px; color:white; display:inline-flex; align-items:center; gap:8px; font-weight:600; }
+.dish-leftover{ font-size:12px; color:var(--muted); }
+
+/* Modal visuals managed through Tailwind utility classes; this keeps CSS small */
+
+@media (prefers-reduced-motion: reduce){
+  *{ transition:none !important; animation:none !important; }
+}
