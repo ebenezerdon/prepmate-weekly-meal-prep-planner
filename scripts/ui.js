@@ -392,6 +392,15 @@
 			DOM.deleteModal.attr("aria-hidden", "true")
 		}
 
+		DOM.dishForm.show = function () {
+			DOM.dishForm.removeClass("hidden").css("display", "flex")
+			DOM.dishForm.attr("aria-hidden", "false")
+		}
+		DOM.dishForm.hide = function () {
+			DOM.dishForm.addClass("hidden").css("display", "none")
+			DOM.dishForm.attr("aria-hidden", "true")
+		}
+
 		// Handle modal delete confirm + cancel
 		DOM.deleteCancel.on("click", () => {
 			DOM.deleteModal.hide()

@@ -114,35 +114,6 @@
 					<button id="addDishBtn" class="btn-primary text-sm">+ Add</button>
 				</div>
 
-				<form id="dishForm" class="mt-4 hidden" aria-hidden="true">
-					<label class="block text-sm text-gray-700">Name</label>
-					<input
-						id="dishName"
-						class="mt-1 block w-full rounded-md border-gray-200 focus:ring-emerald-300" />
-
-					<label class="block text-sm text-gray-700 mt-3"
-						>Servings produced</label
-					>
-					<input
-						id="dishServings"
-						type="number"
-						min="1"
-						value="4"
-						class="mt-1 block w-32 rounded-md border-gray-200" />
-
-					<label class="block text-sm text-gray-700 mt-3">Color tag</label>
-					<input id="dishColor" type="color" value="#34D399" class="mt-1" />
-
-					<div class="mt-4 flex items-center gap-2">
-						<button id="saveDish" type="button" class="btn-primary">
-							Save
-						</button>
-						<button id="cancelDish" type="button" class="btn-muted">
-							Cancel
-						</button>
-					</div>
-				</form>
-
 				<div id="dishList" class="mt-4 space-y-3 text-sm text-gray-700">
 					<!-- dish rows render here -->
 				</div>
@@ -207,6 +178,41 @@
 						<button id="deleteConfirm" class="btn-primary">Delete</button>
 					</div>
 				</div>
+			</div>
+
+			<div
+				id="dishForm"
+				class="fixed inset-0 z-50 hidden items-center justify-center bg-black bg-opacity-30">
+				<form
+					class="w-full max-w-md bg-white rounded-xl p-6 shadow-lg"
+					aria-hidden="true">
+					<label class="block text-sm text-gray-700">Name</label>
+					<input
+						id="dishName"
+						class="mt-1 block w-full rounded-md border-gray-200 focus:ring-emerald-300" />
+
+					<label class="block text-sm text-gray-700 mt-3"
+						>Servings produced</label
+					>
+					<input
+						id="dishServings"
+						type="number"
+						min="1"
+						value="4"
+						class="mt-1 block w-32 rounded-md border-gray-200" />
+
+					<label class="block text-sm text-gray-700 mt-3">Color tag</label>
+					<input id="dishColor" type="color" value="#34D399" class="mt-1" />
+
+					<div class="mt-4 flex items-center gap-2">
+						<button id="saveDish" type="button" class="btn-primary">
+							Save
+						</button>
+						<button id="cancelDish" type="button" class="btn-muted">
+							Cancel
+						</button>
+					</div>
+				</form>
 			</div>
 		</main>
 
