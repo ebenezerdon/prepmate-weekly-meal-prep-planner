@@ -216,6 +216,10 @@
 		DOM.deleteModal.data("dishId", dishId)
 	}
 
+	function openClearWeekModal() {
+		DOM.clearWeekModal.show()
+	}
+
 	function populateAssignDishSelect(preselectId) {
 		DOM.assignDish.empty()
 		DOM.assignDish.append('<option value="">-- choose dish --</option>')
@@ -275,13 +279,6 @@
 		}
 	}
 
-	function clearWeek() {
-		if (!confirm("Clear all assigned meals for the week?")) return
-		State.plan = {}
-		syncToStorage()
-		renderAll()
-	}
-
 	function exportPlan() {
 		const data = JSON.stringify(
 			{ dishes: State.dishes, plan: State.plan },
@@ -318,12 +315,14 @@
 		DOM.deleteModal = $("#deleteModal")
 		DOM.deleteCancel = $("#deleteCancel")
 		DOM.deleteConfirm = $("#deleteConfirm")
+		DOM.clearWeekModal = $("#clearWeekModal")
 		DOM.assignDish = $("#assignDish")
 		DOM.assignServings = $("#assignServings")
 		DOM.assignMeal = $("#assignMeal")
 		DOM.assignSave = $("#assignSave")
 		DOM.assignCancel = $("#assignCancel")
-		DOM.clearWeek = $("#clearWeek")
+		DOM.clearWeekConfirm = $("#clearWeekConfirm")
+		DOM.clearWeekCancel = $("#clearWeekCancel")
 		DOM.exportPlan = $("#exportPlan")
 		DOM.toggleAuto = $("#toggleAutoBalance")
 
@@ -363,7 +362,6 @@
 			DOM.assignModal.hide()
 		})
 
-		DOM.clearWeek.on("click", clearWeek)
 		DOM.exportPlan.on("click", exportPlan)
 
 		DOM.toggleAuto.on("change", function () {
@@ -392,6 +390,15 @@
 			DOM.deleteModal.attr("aria-hidden", "true")
 		}
 
+		DOM.clearWeekModal.show = function () {
+			DOM.clearWeekModal.removeClass("hidden").css("display", "flex")
+			DOM.clearWeekModal.attr("aria-hidden", "false")
+		}
+		DOM.clearWeekModal.hide = function () {
+			DOM.clearWeekModal.addClass("hidden").css("display", "none")
+			DOM.clearWeekModal.attr("aria-hidden", "true")
+		}
+
 		DOM.dishForm.show = function () {
 			DOM.dishForm.removeClass("hidden").css("display", "flex")
 			DOM.dishForm.attr("aria-hidden", "false")
@@ -412,8 +419,19 @@
 			DOM.deleteModal.hide()
 		})
 
+		DOM.clearWeekCancel.on("click", () => {
+			DOM.clearWeekModal.hide()
+		})
+
+		DOM.clearWeekConfirm.on("click", () => {
+			State.plan = {}
+			syncToStorage()
+			renderAll()
+			DOM.clearWeekModal.hide()
+		})
+
 		// top-level buttons
-		$("#clearWeek").on("click", clearWeek)
+		$("#clearWeek").on("click", openClearWeekModal)
 		$("#exportPlan").on("click", exportPlan)
 
 		// set initial render

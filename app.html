@@ -180,6 +180,7 @@
 				</div>
 			</div>
 
+			<!-- Dish form modal -->
 			<div
 				id="dishForm"
 				class="fixed inset-0 z-50 hidden items-center justify-center bg-black bg-opacity-30">
@@ -213,6 +214,23 @@
 						</button>
 					</div>
 				</form>
+			</div>
+
+			<!-- Clear Week Modal-->
+			<div
+				id="clearWeekModal"
+				class="fixed inset-0 z-50 hidden items-center justify-center bg-black bg-opacity-30">
+				<div class="w-full max-w-md bg-white rounded-xl p-6 shadow-lg">
+					<h4 class="font-semibold text-lg">Confirm Deletion</h4>
+					<p class="mt-2 text-sm text-gray-700">
+						Clear all assigned meals for the week?
+					</p>
+
+					<div class="mt-4 flex items-center justify-end gap-2">
+						<button id="clearWeekCancel" class="btn-muted">Cancel</button>
+						<button id="clearWeekConfirm" class="btn-primary">Clear</button>
+					</div>
+				</div>
 			</div>
 		</main>
 
