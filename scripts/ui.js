@@ -480,6 +480,5 @@
 	// attach some functions onto App for debugging and use from other modules
 	win.App.addDish = addDish
 	win.App.removeDish = removeDish
-	win.App.clearWeek = clearWeek
 	win.App.exportPlan = exportPlan
 })(window, jQuery)

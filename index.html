@@ -7,8 +7,10 @@
 		<meta
 			name="description"
 			content="Plan meals, balance servings, and reuse leftovers intelligently with PrepMate. Beautiful UI, persistent plans, and smart balancing." />
+		<link rel="stylesheet" href="styles/main.css" />
 		<script src="https://cdn.tailwindcss.com"></script>
 		<script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+		<script src="./scripts/main.js"></script>
 		<script>
 			tailwind.config = {
 				theme: {
@@ -20,7 +22,11 @@
 				},
 			}
 		</script>
-		<link rel="stylesheet" href="styles/main.css" />
+		<!-- PWA: manifest and theme color -->
+		<link rel="manifest" href="/manifest.json" />
+		<meta name="theme-color" content="#FFF9F2" />
+		<link rel="apple-touch-icon" href="icons/icon-192.svg" />
+		<script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
 		<style type="text/tailwindcss" data-teda="tailwind-apply">
 			@layer components {
 				.btn-primary {
