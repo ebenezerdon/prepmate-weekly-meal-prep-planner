@@ -239,19 +239,28 @@
 		const servings = parseInt(DOM.assignServings.val(), 10) || 1
 		const meal = DOM.assignMeal.val()
 		const targetKey = DOM.assignModal.data("targetKey")
+		const $error = $("#assignError")
+
+		// Clear any previous error
+		$error.addClass("hidden").text("")
+
 		if (!dishId) {
-			alert("Select a dish")
-			return
-		}
-		if (servings < 1) {
-			alert("Servings must be at least 1")
+			$error
+				.text("⚠️ Please select a dish before assigning.")
+				.removeClass("hidden")
 			return
 		}
 
+		if (servings < 1) {
+			$error.text("⚠️ Servings must be at least 1.").removeClass("hidden")
+			return
+		}
+
+		// proceed if valid
 		if (targetKey) {
 			State.plan[targetKey] = { dishId, servings }
 		} else {
-			// user opened from dish list: ask where to assign — find first empty slot of selected meal
+			// opened from dish list: find first empty slot
 			const DAYS = window.App.Utils.DAYS
 			let assigned = false
 			for (let i = 0; i < DAYS.length && !assigned; i++) {
@@ -262,12 +271,14 @@
 				}
 			}
 			if (!assigned) {
-				alert("No empty slots available for that meal. Choose a specific slot.")
+				$error
+					.text("⚠️ No empty slots available for that meal.")
+					.removeClass("hidden")
+				return
 			}
 		}
 
 		DOM.assignModal.hide()
-		// optionally auto-balance leftovers
 		applyAutoBalanceIfNeeded()
 		syncToStorage()
 		renderAll()
@@ -346,16 +357,29 @@
 			const name = DOM.dishName.val() || ""
 			const servings = parseInt(DOM.dishServings.val(), 10) || 1
 			const color = DOM.dishColor.val() || "#34D399"
+			const $error = $("#dishError")
+
+			// Clear old error
+			$error.addClass("hidden").text("")
+
+			// Validation
 			if (!name.trim()) {
-				alert("Dish name required")
+				$error.text("⚠️ Dish name is required.").removeClass("hidden")
 				return
 			}
+
+			// Add dish if valid
 			addDish(name, servings, color)
+
+			// Reset form + close
 			DOM.dishForm.hide()
 			DOM.dishForm.attr("aria-hidden", "true")
 			DOM.dishName.val("")
 			DOM.dishServings.val("4")
+			$error.addClass("hidden").text("")
 		})
+
+		DOM.dishName.on("input", () => $("#dishError").addClass("hidden").text(""))
 
 		DOM.assignSave.on("click", assignToTarget)
 		DOM.assignCancel.on("click", function () {
