@@ -1,8 +1,8 @@
 {
 	"name": "Prepmate – Weekly Meal Prep Planner",
 	"short_name": "PrepMate",
-	"start_url": "/app.html",
-	"scope": "/",
+	"start_url": "./app.html",
+	"scope": "./",
 	"display": "standalone",
 	"background_color": "#FFF9F2",
 	"theme_color": "#FFF9F2",

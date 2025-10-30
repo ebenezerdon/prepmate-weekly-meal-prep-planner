@@ -1,15 +1,15 @@
 const CACHE_NAME = "prepmate-v2"
 const PRECACHE = [
-	"/",
-	"/index.html",
-	"/app.html",
-	"/styles/main.css",
-	"/scripts/helpers.js",
-	"/scripts/ui.js",
-	"/scripts/main.js",
-	"/manifest.json",
-	"/icons/icon-192.svg",
-	"/icons/icon-512.svg",
+	"./",
+	"./index.html",
+	"./app.html",
+	"./styles/main.css",
+	"./scripts/helpers.js",
+	"./scripts/ui.js",
+	"./scripts/main.js",
+	"./manifest.json",
+	"./icons/icon-192.svg",
+	"./icons/icon-512.svg",
 ]
 
 self.addEventListener("install", (event) => {
@@ -57,7 +57,7 @@ self.addEventListener("fetch", (event) => {
 					caches.open(CACHE_NAME).then((cache) => cache.put(req, copy))
 					return res
 				})
-				.catch(() => caches.match("/app.html"))
+				.catch(() => caches.match("./app.html"))
 		})
 	)
 })
