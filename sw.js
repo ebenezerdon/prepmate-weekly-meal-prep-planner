@@ -1,4 +1,4 @@
-const CACHE_NAME = "prepmate-v1"
+const CACHE_NAME = "prepmate-v2"
 const PRECACHE = [
 	"/",
 	"/index.html",
